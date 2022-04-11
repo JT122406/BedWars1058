@@ -38,6 +38,7 @@ import com.andrei1058.bedwars.arena.spectator.SpectatorListeners;
 import com.andrei1058.bedwars.arena.tasks.OneTick;
 import com.andrei1058.bedwars.arena.tasks.Refresh;
 import com.andrei1058.bedwars.arena.upgrades.BaseListener;
+import com.andrei1058.bedwars.arena.upgrades.HealPoolListner;
 import com.andrei1058.bedwars.commands.bedwars.MainCommand;
 import com.andrei1058.bedwars.commands.leave.LeaveCommand;
 import com.andrei1058.bedwars.commands.party.PartyCommand;
@@ -294,12 +295,16 @@ public class BedWars extends JavaPlugin {
         // Register events
         registerEvents(new EnderPearlLanded(), new QuitAndTeleportListener(), new BreakPlace(), new DamageDeathMove(), new Inventory(), new Interact(), new RefreshGUI(), new HungerWeatherSpawn(), new CmdProcess(),
                 new FireballListener(), new EggBridge(), new SpectatorListeners(), new BaseListener(), new TargetListener(), new LangListener(), new Warnings(this), new ChatAFK());
+
+        if (config.getBoolean(ConfigPath.GENERAL_CONFIGURATION_HEAL_POOL))  //heal pool
+            registerEvents(new HealPoolListner());
+
         if (getServerType() == ServerType.BUNGEE) {
             if (autoscale) {
                 //registerEvents(new ArenaListeners());
                 ArenaSocket.lobbies.addAll(config.getList(ConfigPath.GENERAL_CONFIGURATION_BUNGEE_OPTION_LOBBY_SERVERS));
                 new SendTask();
-                registerEvents(new AutoscaleListener(), new PrePartyListener(), new JoinListenerBungee());
+                registerEvents(new AutoscaleListener(), new JoinListenerBungee());
                 Bukkit.getScheduler().runTaskTimerAsynchronously(this, new LoadedUsersCleaner(), 60L, 60L);
             } else {
                 registerEvents(new ServerPingListener(), new JoinListenerBungeeLegacy());
