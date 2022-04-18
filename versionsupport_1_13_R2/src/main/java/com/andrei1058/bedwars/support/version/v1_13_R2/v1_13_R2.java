@@ -692,6 +692,7 @@ public class v1_13_R2 extends VersionSupport {
     }
 
     @Override
+
     public void placeTowerBlocks(org.bukkit.block.Block b, IArena a, TeamColor color, int x, int y, int z){
         b.getRelative(x, y, z).setType(color.woolMaterial());
         a.addPlacedBlock(b.getRelative(x, y, z));
@@ -701,5 +702,8 @@ public class v1_13_R2 extends VersionSupport {
     public void placeLadder(org.bukkit.block.Block b, int x, int y, int z, IArena a, int ladderdata){
         b.getRelative(x, y, z).setType(Material.LADDER);
         a.addPlacedBlock(b.getRelative(x, y, z));
+
+    public void playEffect(Player player, Location location){
+        player.spawnParticle(Particle.VILLAGER_HAPPY, location, 1);
     }
 }

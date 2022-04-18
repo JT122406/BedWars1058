@@ -705,5 +705,8 @@ public class v1_9_R2 extends VersionSupport {
         b.getRelative(x, y, z).setType(Material.LADDER);
         b.getRelative(x, y, z).setData((byte)ladderdata);
         a.addPlacedBlock(b.getRelative(x, y, z));
+
+    public void playEffect(Player player, Location location){
+        player.spawnParticle(Particle.VILLAGER_HAPPY, location, 1);
     }
 }

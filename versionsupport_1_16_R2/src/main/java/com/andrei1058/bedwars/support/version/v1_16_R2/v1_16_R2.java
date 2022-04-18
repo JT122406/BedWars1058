@@ -691,5 +691,8 @@ public class v1_16_R2 extends VersionSupport {
     public void placeLadder(Block b, int x, int y,int z, IArena a, int ladderdata){
         b.getRelative(x, y, z).setType(Material.LADDER);
         a.addPlacedBlock(b.getRelative(x, y, z));
+
+    public void playEffect(Player player, Location location){
+        player.spawnParticle(Particle.VILLAGER_HAPPY, location, 1);
     }
 }

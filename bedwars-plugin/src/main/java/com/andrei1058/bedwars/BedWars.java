@@ -38,6 +38,7 @@ import com.andrei1058.bedwars.arena.spectator.SpectatorListeners;
 import com.andrei1058.bedwars.arena.tasks.OneTick;
 import com.andrei1058.bedwars.arena.tasks.Refresh;
 import com.andrei1058.bedwars.arena.upgrades.BaseListener;
+import com.andrei1058.bedwars.arena.upgrades.HealPoolListner;
 import com.andrei1058.bedwars.commands.bedwars.MainCommand;
 import com.andrei1058.bedwars.commands.leave.LeaveCommand;
 import com.andrei1058.bedwars.commands.party.PartyCommand;
@@ -68,11 +69,7 @@ import com.andrei1058.bedwars.support.citizens.CitizensListener;
 import com.andrei1058.bedwars.support.citizens.JoinNPC;
 import com.andrei1058.bedwars.support.papi.PAPISupport;
 import com.andrei1058.bedwars.support.papi.SupportPAPI;
-import com.andrei1058.bedwars.support.party.NoParty;
-import com.andrei1058.bedwars.support.party.PAF;
-import com.andrei1058.bedwars.support.party.PAFBungeecordRedisApi;
-import com.andrei1058.bedwars.support.party.PartiesAdapter;
-import com.andrei1058.bedwars.support.preloadedparty.PrePartyListener;
+import com.andrei1058.bedwars.support.party.*;
 import com.andrei1058.bedwars.support.vault.*;
 import com.andrei1058.bedwars.support.vipfeatures.VipFeatures;
 import com.andrei1058.bedwars.support.vipfeatures.VipListeners;
@@ -296,13 +293,21 @@ public class BedWars extends JavaPlugin {
 
         // Register events
         registerEvents(new EnderPearlLanded(), new QuitAndTeleportListener(), new BreakPlace(), new DamageDeathMove(), new Inventory(), new Interact(), new RefreshGUI(), new HungerWeatherSpawn(), new CmdProcess(),
-                new FireballListener(), new EggBridge(), new SpectatorListeners(), new BaseListener(), new TargetListener(), new LangListener(), new Warnings(this), new ChatAFK());
+
+                new FireballListener(), new EggBridge(), new SpectatorListeners(), new BaseListener(), new TargetListener(), new LangListener(), new Warnings(this), new ChatAFK(), new GameEnd());
+
+               
+        Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
+                if (config.getBoolean(ConfigPath.GENERAL_CONFIGURATION_HEAL_POOL))  //heal pool
+                    registerEvents(new HealPoolListner());
+        });
+
         if (getServerType() == ServerType.BUNGEE) {
             if (autoscale) {
                 //registerEvents(new ArenaListeners());
                 ArenaSocket.lobbies.addAll(config.getList(ConfigPath.GENERAL_CONFIGURATION_BUNGEE_OPTION_LOBBY_SERVERS));
                 new SendTask();
-                registerEvents(new AutoscaleListener(), new PrePartyListener(), new JoinListenerBungee());
+                registerEvents(new AutoscaleListener(), new JoinListenerBungee());
                 Bukkit.getScheduler().runTaskTimerAsynchronously(this, new LoadedUsersCleaner(), 60L, 60L);
             } else {
                 registerEvents(new ServerPingListener(), new JoinListenerBungeeLegacy());
@@ -328,15 +333,18 @@ public class BedWars extends JavaPlugin {
 
         /* Deprecated versions */
         switch (version) {
-            case "v1_8_R3":
             case "v1_9_R1":
             case "v1_9_R2":
             case "v1_10_R1":
             case "v1_11_R1":
-            case "v1_12_R1":
+            case "v1_13_R2":
+            case "v1_14_R1":
+            case "v1_15_R1":
+            case "v1_16_R1":
+            case "v1_16_R2":
                 registerEvents(new InvisibilityPotionListener());
                 Bukkit.getScheduler().runTaskLater(this,
-                        () -> System.out.println("\u001B[31m[WARN] BedWars1058 may drop support for this server version in the future.\nPlease consider upgrading to a newer paper/spigot version.\u001B[0m"), 40L);
+                        () -> System.out.println("\u001B[31m[WARN] BedWars1058 may drop support for this server version in the future.\nSee: https://wiki.andrei1058.dev/docs/BedWars1058/compatibility \u001B[0m"), 40L);
                 break;
         }
 
@@ -358,6 +366,9 @@ public class BedWars extends JavaPlugin {
                 } else if (Bukkit.getServer().getPluginManager().isPluginEnabled("Spigot-Party-API-PAF")) {
                     getLogger().info("Hook into Spigot Party API for Party and Friends Extended (by Simonsator) support!");
                     party = new PAFBungeecordRedisApi();
+                } else if (Bukkit.getServer().getPluginManager().isPluginEnabled("PartyAndFriendsGUI")){
+                    getLogger().info("Hook into DataCallBackAPI for Party and Friends Bungee (by Simonsator) support!");
+                    party = new PAFDataCallBack();
                 }
 
                 if (party instanceof NoParty) {
@@ -378,7 +389,7 @@ public class BedWars extends JavaPlugin {
 
         if (config.getBoolean(ConfigPath.GENERAL_CONFIGURATION_PERFORMANCE_ROTATE_GEN)) {
             //new OneTick().runTaskTimer(this, 120, 1);
-            Bukkit.getScheduler().runTaskTimer(this, new OneTick(), 120, 1);
+            Bukkit.getScheduler().runTaskTimerAsynchronously(this, new OneTick(), 120, 1);
         }
 
         /* Register NMS entities */
