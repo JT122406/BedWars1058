@@ -22,7 +22,6 @@ package com.andrei1058.bedwars.support.party;
 
 import com.andrei1058.bedwars.api.language.Messages;
 import com.andrei1058.bedwars.api.party.Party;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
