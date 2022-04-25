@@ -48,7 +48,7 @@ public interface Party {
 
     void promotePlayer(Player owner, Player target);
 
-    void warp(Player owner, Player target);
+    void warp(Player owner);
 
     void chat(Player player, String message);
 

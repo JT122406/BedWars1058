@@ -22,6 +22,7 @@ package com.andrei1058.bedwars.support.party;
 
 import com.andrei1058.bedwars.api.language.Messages;
 import com.andrei1058.bedwars.api.party.Party;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -158,8 +159,15 @@ public class Internal implements Party {
     }
 
     @Override
-    public void warp(Player owner, Player target){
-
+    public void warp(Player owner){
+        Party p = getParty(owner);
+        if (p != null){
+            Location location = owner.getLocation();
+            for (Player p1 : p.members) {
+                if (!p1.equals(owner))
+                    p1.teleport(location);
+            }
+        }
     }
 
     @Override

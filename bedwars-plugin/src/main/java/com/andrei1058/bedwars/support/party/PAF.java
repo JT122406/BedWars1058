@@ -100,7 +100,7 @@ public class PAF implements Party {
     public void promotePlayer(Player owner, Player target){}
 
     @Override
-    public void warp(Player owner, Player target){}
+    public void warp(Player owner){}
 
     @Override
     public void chat(Player player, String message){}

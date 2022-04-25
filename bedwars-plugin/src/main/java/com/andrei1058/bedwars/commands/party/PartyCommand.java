@@ -171,16 +171,42 @@ public class PartyCommand extends BukkitCommand {
                     return true;
                 }
                 getParty().promotePlayer(p, target1);
+                for (Player p1 : getParty().getMembers(p)) {
+                    if (p1.equals(p)){ //Message to say you successfully promoted player to Owner
+                        p1.sendMessage(getMsg(p1, Messages.COMMAND_PARTY_PROMOTE_SUCCESS).replace("{player}", args[1]));
+                    } else if (p1.equals(target1)) {  //say you are now Party leader
+                        p1.sendMessage(getMsg(p1, Messages.COMMAND_PARTY_OWNER));
+                    } else {
+                        p1.sendMessage(getMsg(p1, Messages.COMMAND_PARTY_NEW_OWNER).replace("{player}", args[1]));
+                    }
+                }
                 break;
             case "warp":
-                Player target2 = Bukkit.getPlayer(args[1]);
-                getParty().warp(p, target2);
+                if (!getParty().hasParty(p)) {
+                    p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_GENERAL_DENIED_NOT_IN_PARTY));
+                    return true;
+                } else if (!getParty().isOwner(p)) {
+                    p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_INSUFFICIENT_PERMISSIONS));
+                    return true;
+                }
+                getParty().warp(p);
+                //send success message to players
+                for (Player p1 : getParty().getMembers(p)) {
+                    p1.sendMessage(getMsg(p1, Messages.COMMAND_PARTY_WARP_SUCCESS));
+                }
                 break;
             case "chat":
-                if((args.length < 1) || args[1] == null)
+                if (!getParty().hasParty(p)) {
+                    p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_GENERAL_DENIED_NOT_IN_PARTY));
                     return true;
+                }
 
-                String message = args[1];
+                if((args.length < 1) || args[1] == null){
+                    p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_CHAT_NO_MESSAGE));
+                    return true;
+                }
+
+                String message = getMsg(p, Messages.COMMAND_PARTY_CHAT_PREFIX.replace("{sender}", p.getName())) + args[1];  //I will make this configurable
                 if (args.length > 1)
                     for (int i = 2; i < args.length; i++){
                         message = message + args[i];
