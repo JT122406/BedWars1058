@@ -523,7 +523,7 @@ public class Arena implements IArena {
                 }
                 if (minPlayers <= players.size() && teams > 0 && players.size() != teammates / teams) {
                     changeStatus(GameState.starting);
-                } else if (players.size() >= minPlayers && teams == 0) {
+                } else if (players.size() >= minPlayers) {
                     changeStatus(GameState.starting);
                 }
             }
