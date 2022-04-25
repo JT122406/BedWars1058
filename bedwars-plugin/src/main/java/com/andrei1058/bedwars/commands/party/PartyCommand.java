@@ -156,6 +156,22 @@ public class PartyCommand extends BukkitCommand {
                 }
                 getParty().removePlayer(p, target);
                 break;
+            case "promote":
+                if (!getParty().hasParty(p)) {
+                    p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_GENERAL_DENIED_NOT_IN_PARTY));
+                    return true;
+                } else if (!getParty().isOwner(p)) {
+                    p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_INSUFFICIENT_PERMISSIONS));
+                    return true;
+                }
+                Player target = Bukkit.getPlayer(args[1]);
+                if (!getParty().isMember(p, target)){
+                    p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_REMOVE_DENIED_TARGET_NOT_PARTY_MEMBER).replace("{player}", args[1]));
+                    return true;
+                }
+                getParty().promotePlayer(p, target);
+                break;
+
             default:
                 sendPartyCmds(p);
                 break;

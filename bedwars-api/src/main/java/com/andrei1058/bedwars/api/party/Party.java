@@ -46,5 +46,7 @@ public interface Party {
 
     void removePlayer(Player owner, Player target);
 
+    void promotePlayer(Player owner, Player target);
+
     boolean isInternal();
 }

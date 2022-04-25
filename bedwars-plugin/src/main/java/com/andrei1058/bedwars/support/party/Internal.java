@@ -150,6 +150,14 @@ public class Internal implements Party {
     }
 
     @Override
+    public void promotePlayer(Player owner, Player target){
+        Party p = getParty(owner);
+        if (p != null) {
+            p.owner = target;
+        }
+    }
+
+    @Override
     public boolean isInternal() {
         return true;
     }
@@ -161,6 +169,7 @@ public class Internal implements Party {
         }
         return null;
     }
+
 
     @NotNull
     @Contract(pure = true)
