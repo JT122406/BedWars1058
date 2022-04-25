@@ -177,9 +177,12 @@ public class PartyCommand extends BukkitCommand {
                 getParty().warp(p, target2);
                 break;
             case "chat":
-                String message = args[2];
-                if (args.length > 2)
-                    for (int i = 3; i < args.length; i++){
+                if((args.length < 1) || args[1] == null)
+                    return true;
+
+                String message = args[1];
+                if (args.length > 1)
+                    for (int i = 2; i < args.length; i++){
                         message = message + args[i];
                     }
                 getParty().chat(p, message);
