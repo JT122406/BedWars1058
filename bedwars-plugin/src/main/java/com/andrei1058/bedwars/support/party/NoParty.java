@@ -48,24 +48,16 @@ public class NoParty implements Party {
     }
 
     @Override
-    public void createParty(Player owner, Player... members) {
-
-    }
+    public void createParty(Player owner, Player... members) {}
 
     @Override
-    public void addMember(Player owner, Player member) {
-
-    }
+    public void addMember(Player owner, Player member) {}
 
     @Override
-    public void removeFromParty(Player member) {
-
-    }
+    public void removeFromParty(Player member) {}
 
     @Override
-    public void disband(Player owner) {
-
-    }
+    public void disband(Player owner) {}
 
     @Override
     public boolean isMember(Player owner, Player check) {
@@ -73,9 +65,16 @@ public class NoParty implements Party {
     }
 
     @Override
-    public void removePlayer(Player owner, Player target) {
+    public void removePlayer(Player owner, Player target) {}
 
-    }
+    @Override
+    public void promotePlayer(Player owner, Player target){}
+
+    @Override
+    public void warp(Player owner){}
+
+    @Override
+    public void chat(Player player, String message){}
 
     @Override
     public boolean isInternal() {

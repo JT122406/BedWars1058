@@ -256,6 +256,7 @@ public class BedWars extends JavaPlugin {
             }
             if (getServerType() != ServerType.BUNGEE && config.getBoolean(ConfigPath.GENERAL_ENABLE_PARTY_CMD)) {
                 nms.registerCommand("party", new PartyCommand("party"));
+                nms.registerCommand("party", new PartyCommand("p"));
             }
         }, 20L);
 
