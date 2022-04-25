@@ -21,6 +21,7 @@
 package com.andrei1058.bedwars.commands.party;
 
 import com.andrei1058.bedwars.BedWars;
+import com.andrei1058.bedwars.api.arena.GameState;
 import com.andrei1058.bedwars.api.arena.IArena;
 import com.andrei1058.bedwars.api.language.Messages;
 import com.andrei1058.bedwars.arena.Arena;
@@ -207,7 +208,10 @@ public class PartyCommand extends BukkitCommand {
                     {
                         for (Player p1 : getParty().getMembers(p)) {
                             if (!arena.getPlayers().contains(p1))
-                                arena.addSpectator(p1, false, p.getLocation());
+                                if ((!arena.getSpectators().contains(p)) && arena.getStatus().equals(GameState.playing) )  //owner is alive
+                                    arena.addSpectator(p1, false, p.getLocation());
+                                else
+                                    arena.addSpectator(p1, false, arena.getSpectatorLocation());
                         }
                     }
                 }
