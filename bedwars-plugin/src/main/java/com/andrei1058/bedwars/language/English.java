@@ -86,7 +86,13 @@ public class English extends Language {
                 "&aParty Commands:", "&e/party help &7- &bPrints this help message", "&e/party invite <player> &7- &bInvites the player to your party",
                 "&e/party leave &7- &bLeaves the current party",
                 "&e/party remove <player> &7- &bRemove the player from the party",
-                "&e/party accept <player> &7- &bAccept a party invite", "&e/party disband &7- &bDisbands the party"));
+                "&e/party accept <player> &7- &bAccept a party invite",
+                "&e/party disband &7- &bDisbands the party",
+                "&e/party kick <player> &7- &bKicks a player from the party",
+                "&e/party remove <player> &7- &bRemoves a player from the party",
+                "&e/party promote <player> &7- &bPromotes a player to owner",
+                "&e/party warp &7- &bteleports party to owner",
+                "&e/party chat <message> &7- &bSends message to all players in party"));
         yml.addDefault(Messages.COMMAND_PARTY_INVITE_USAGE, "{prefix}&eUsage: &7/party invite <player>");
         yml.addDefault(Messages.COMMAND_PARTY_INVITE_DENIED_PLAYER_OFFLINE, "{prefix}&7{player} &eis not online!");
         yml.addDefault(Messages.COMMAND_PARTY_INVITE_SENT, "{prefix}&eInvite sent to &7{player}&6.");
