@@ -34,6 +34,7 @@ import com.andrei1058.bedwars.support.version.common.VersionCommon;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Color;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
@@ -740,5 +741,19 @@ public class v1_8_R3 extends VersionSupport {
     public void playEffect(Player player, Location location){
         PacketPlayOutWorldParticles pwp = new PacketPlayOutWorldParticles(EnumParticle.VILLAGER_HAPPY, true, (float) location.getX(), (float) location.getY(), (float) location.getZ(), (float) 0, (float) 0, (float) 0, (float) 0, 1);
         ((CraftPlayer) player).getHandle().playerConnection.sendPacket(pwp);
+    }
+
+    @Override
+    public void placeTowerBlocks(org.bukkit.block.Block b, IArena a, TeamColor color, int x, int y, int z){
+        b.getRelative(x, y, z).setType(Material.WOOL);
+        setBlockTeamColor(b.getRelative(x, y, z), color);
+        a.addPlacedBlock(b.getRelative(x, y, z));
+    }
+
+    @Override
+    public void placeLadder(org.bukkit.block.Block b, int x, int y, int z, IArena a, int ladderdata){
+        b.getRelative(x, y, z).setType(Material.LADDER);
+        b.getRelative(x, y, z).setData((byte)ladderdata);
+        a.addPlacedBlock(b.getRelative(x, y, z));
     }
 }

@@ -20,7 +20,11 @@
 
 package com.andrei1058.bedwars.commands.party;
 
+import com.andrei1058.bedwars.BedWars;
+import com.andrei1058.bedwars.api.arena.GameState;
+import com.andrei1058.bedwars.api.arena.IArena;
 import com.andrei1058.bedwars.api.language.Messages;
+import com.andrei1058.bedwars.arena.Arena;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -137,6 +141,7 @@ public class PartyCommand extends BukkitCommand {
                 getParty().disband(p);
                 break;
             case "remove":
+            case "kick":
                 if (args.length == 1) {
                     p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_REMOVE_USAGE));
                     return true;
@@ -155,6 +160,84 @@ public class PartyCommand extends BukkitCommand {
                     return true;
                 }
                 getParty().removePlayer(p, target);
+                break;
+            case "promote":
+                if (!getParty().hasParty(p)) {
+                    p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_GENERAL_DENIED_NOT_IN_PARTY));
+                    return true;
+                } else if (!getParty().isOwner(p)) {
+                    p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_INSUFFICIENT_PERMISSIONS));
+                    return true;
+                }
+                Player target1 = Bukkit.getPlayer(args[1]);
+                if (!getParty().isMember(p, target1)){
+                    p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_REMOVE_DENIED_TARGET_NOT_PARTY_MEMBER).replace("{player}", args[1]));
+                    return true;
+                }
+                getParty().promotePlayer(p, target1);
+                for (Player p1 : getParty().getMembers(p)) {
+                    if (p1.equals(p)){ //Message to say you successfully promoted player to Owner
+                        p1.sendMessage(getMsg(p1, Messages.COMMAND_PARTY_PROMOTE_SUCCESS).replace("{player}", args[1]));
+                    } else if (p1.equals(target1)) {  //say you are now Party leader
+                        p1.sendMessage(getMsg(p1, Messages.COMMAND_PARTY_OWNER));
+                    } else {
+                        p1.sendMessage(getMsg(p1, Messages.COMMAND_PARTY_NEW_OWNER).replace("{player}", args[1]));
+                    }
+                }
+                break;
+            case "warp":
+                if (!getParty().hasParty(p)) {
+                    p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_GENERAL_DENIED_NOT_IN_PARTY));
+                    return true;
+                } else if (!getParty().isOwner(p)) {
+                    p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_INSUFFICIENT_PERMISSIONS));
+                    return true;
+                }
+
+                //join game
+                if (Arena.isInArena(p)){
+                    IArena arena = Arena.getArenaByPlayer(p);
+                    if ((arena.getMaxPlayers() - arena.getPlayers().size()) >= 1){
+                        //player joins game
+                        for (Player p1 : getParty().getMembers(p)) {
+                            if (!arena.getPlayers().contains(p1))
+                                arena.addPlayer(p1, true);
+                        }
+                    }
+                    else
+                    {
+                        for (Player p1 : getParty().getMembers(p)) {
+                            if (!arena.getPlayers().contains(p1))
+                                if ((!arena.getSpectators().contains(p)) && arena.getStatus().equals(GameState.playing) )  //owner is alive
+                                    arena.addSpectator(p1, false, p.getLocation());
+                                else
+                                    arena.addSpectator(p1, false, arena.getSpectatorLocation());
+                        }
+                    }
+                }
+                getParty().warp(p);
+                //send success message to players
+                for (Player p1 : getParty().getMembers(p)) {
+                    p1.sendMessage(getMsg(p1, Messages.COMMAND_PARTY_WARP_SUCCESS));
+                }
+                break;
+            case "chat":
+                if (!getParty().hasParty(p)) {
+                    p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_GENERAL_DENIED_NOT_IN_PARTY));
+                    return true;
+                }
+
+                if((args.length < 1) || args[1] == null){
+                    p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_CHAT_NO_MESSAGE));
+                    return true;
+                }
+
+                String message = getMsg(p, Messages.COMMAND_PARTY_CHAT_PREFIX.replace("{sender}", p.getName())) + args[1];  //I will make this configurable
+                if (args.length > 1)
+                    for (int i = 2; i < args.length; i++){
+                        message = message + args[i];
+                    }
+                getParty().chat(p, message);
                 break;
             default:
                 sendPartyCmds(p);

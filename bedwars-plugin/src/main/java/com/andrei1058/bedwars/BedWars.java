@@ -257,6 +257,7 @@ public class BedWars extends JavaPlugin {
             }
             if (getServerType() != ServerType.BUNGEE && config.getBoolean(ConfigPath.GENERAL_ENABLE_PARTY_CMD)) {
                 nms.registerCommand("party", new PartyCommand("party"));
+                nms.registerCommand("party", new PartyCommand("p"));
             }
         }, 20L);
 
@@ -297,12 +298,15 @@ public class BedWars extends JavaPlugin {
 
         // Register events
         registerEvents(new EnderPearlLanded(), new QuitAndTeleportListener(), new BreakPlace(), new DamageDeathMove(), new Inventory(), new Interact(), new RefreshGUI(), new HungerWeatherSpawn(), new CmdProcess(),
+
                 new FireballListener(), new EggBridge(), new SpectatorListeners(), new BaseListener(), new TargetListener(), new LangListener(), new Warnings(this), new ChatAFK());
 
         Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
                 if (config.getBoolean(ConfigPath.GENERAL_CONFIGURATION_HEAL_POOL))  //heal pool
                     registerEvents(new HealPoolListner());
         });
+
+                new FireballListener(), new EggBridge(), new SpectatorListeners(), new BaseListener(), new TargetListener(), new LangListener(), new Warnings(this), new ChatAFK(), new GameEnd());
 
         if (getServerType() == ServerType.BUNGEE) {
             if (autoscale) {
@@ -387,8 +391,7 @@ public class BedWars extends JavaPlugin {
         //new Refresh().runTaskTimer(this, 20L, 20L);
 
         if (config.getBoolean(ConfigPath.GENERAL_CONFIGURATION_PERFORMANCE_ROTATE_GEN)) {
-            //new OneTick().runTaskTimer(this, 120, 1);
-            Bukkit.getScheduler().runTaskTimer(this, new OneTick(), 120, 1);
+            Bukkit.getScheduler().runTaskTimerAsynchronously(this, new OneTick(), 120, 1);
         }
 
         /* Register NMS entities */

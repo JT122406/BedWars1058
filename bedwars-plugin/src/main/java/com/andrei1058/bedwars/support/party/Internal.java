@@ -22,6 +22,7 @@ package com.andrei1058.bedwars.support.party;
 
 import com.andrei1058.bedwars.api.language.Messages;
 import com.andrei1058.bedwars.api.party.Party;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -150,6 +151,42 @@ public class Internal implements Party {
     }
 
     @Override
+    public void promotePlayer(Player owner, Player target){
+        Party p = getParty(owner);
+        if (p != null) {
+            p.owner = target;
+        }
+    }
+
+    @Override
+    public void warp(Player owner){
+        Party p = getParty(owner);
+        if (p != null){
+            Location location = owner.getLocation();
+            for (Player p1 : p.members) {
+                if (!p1.equals(owner))
+                    p1.teleport(location);
+            }
+        }
+    }
+
+    @Override
+    public void chat(Player player, String message){
+        if (hasParty(player)){
+            for (Party p : Internal.getParites()) {
+                if (p.members.contains(player)){
+                    for (Player p1:p.members) {
+                        if (!p1.equals(player))
+                            p1.sendMessage(message);
+                    }
+                    break;
+                }
+
+            }
+        }
+    }
+
+    @Override
     public boolean isInternal() {
         return true;
     }
@@ -161,6 +198,7 @@ public class Internal implements Party {
         }
         return null;
     }
+
 
     @NotNull
     @Contract(pure = true)

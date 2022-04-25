@@ -86,7 +86,13 @@ public class English extends Language {
                 "&aParty Commands:", "&e/party help &7- &bPrints this help message", "&e/party invite <player> &7- &bInvites the player to your party",
                 "&e/party leave &7- &bLeaves the current party",
                 "&e/party remove <player> &7- &bRemove the player from the party",
-                "&e/party accept <player> &7- &bAccept a party invite", "&e/party disband &7- &bDisbands the party"));
+                "&e/party accept <player> &7- &bAccept a party invite",
+                "&e/party disband &7- &bDisbands the party",
+                "&e/party kick <player> &7- &bKicks a player from the party",
+                "&e/party remove <player> &7- &bRemoves a player from the party",
+                "&e/party promote <player> &7- &bPromotes a player to owner",
+                "&e/party warp &7- &bteleports party to owner",
+                "&e/party chat <message> &7- &bSends message to all players in party"));
         yml.addDefault(Messages.COMMAND_PARTY_INVITE_USAGE, "{prefix}&eUsage: &7/party invite <player>");
         yml.addDefault(Messages.COMMAND_PARTY_INVITE_DENIED_PLAYER_OFFLINE, "{prefix}&7{player} &eis not online!");
         yml.addDefault(Messages.COMMAND_PARTY_INVITE_SENT, "{prefix}&eInvite sent to &7{player}&6.");
@@ -104,6 +110,12 @@ public class English extends Language {
         yml.addDefault(Messages.COMMAND_PARTY_DISBAND_SUCCESS, "{prefix}&eParty disbanded!");
         yml.addDefault(Messages.COMMAND_PARTY_REMOVE_USAGE, "{prefix}&7Usage: &e/party remove <player>");
         yml.addDefault(Messages.COMMAND_PARTY_REMOVE_SUCCESS, "{prefix}&7{player} &ewas removed from the party,");
+        yml.addDefault(Messages.COMMAND_PARTY_WARP_SUCCESS, "{prefix}&7{player} &eParty was teleported to Owner");
+        yml.addDefault(Messages.COMMAND_PARTY_PROMOTE_SUCCESS, "{prefix}&7 &eYou successfully promoted {player} to owner");
+        yml.addDefault(Messages.COMMAND_PARTY_OWNER, "{prefix} &eYou have been promoted to party owner");
+        yml.addDefault(Messages.COMMAND_PARTY_NEW_OWNER, "{prefix}&7 &e{player} has been promoted to owner");
+        yml.addDefault(Messages.COMMAND_PARTY_CHAT_PREFIX, "[Party Chat] {sender} -> Party: ");
+        yml.addDefault(Messages.COMMAND_PARTY_CHAT_NO_MESSAGE, "You need to type a message to send party chat");
         yml.addDefault(Messages.COMMAND_PARTY_REMOVE_DENIED_TARGET_NOT_PARTY_MEMBER, "{prefix}&7{player} &eis not in your party!");
         yml.addDefault(Messages.COMMAND_FORCESTART_NOT_IN_GAME, "§c▪ §7You're not playing!");
         yml.addDefault(Messages.COMMAND_FORCESTART_SUCCESS, "§c▪ §7Countdown shortened!");
@@ -430,6 +442,7 @@ public class English extends Language {
                 "&7seconds after consuming.", "", "{quick_buy}", "{buy_status}"));
         addContentMessages(yml, "sponge", ConfigPath.SHOP_PATH_CATEGORY_UTILITY, "{color}Sponge", Arrays.asList("&7Cost: {cost} {currency}", "", "&7Great for soaking up water.",
                 "", "{quick_buy}", "{buy_status}"));
+        addContentMessages(yml, "Compact Pop-up Tower", ConfigPath.SHOP_PATH_CATEGORY_UTILITY, "{color}Compact Pop-up Tower", Arrays.asList("&7Cost: {cost} {currency}", "", "&7Place a compact pop-up", "&7tower defense!", "", "{quick_buy}", "{buy_status}"));
 
         //
         yml.addDefault(Messages.MEANING_NO_TRAP, "No trap!");

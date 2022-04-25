@@ -35,6 +35,7 @@ import net.minecraft.server.v1_9_R2.Item;
 import net.minecraft.server.v1_9_R2.*;
 import org.bukkit.Color;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.command.Command;
 import org.bukkit.craftbukkit.v1_9_R2.CraftServer;
@@ -695,5 +696,19 @@ public class v1_9_R2 extends VersionSupport {
     @Override
     public void playEffect(Player player, Location location){
         player.spawnParticle(Particle.VILLAGER_HAPPY, location, 1);
+    }
+  
+    @Override
+    public void placeTowerBlocks(org.bukkit.block.Block b, IArena a, TeamColor color, int x, int y, int z){
+        b.getRelative(x, y, z).setType(Material.WOOL);
+        setBlockTeamColor(b.getRelative(x, y, z), color);
+        a.addPlacedBlock(b.getRelative(x, y, z));
+    }
+
+    @Override
+    public void placeLadder(org.bukkit.block.Block b, int x, int y, int z, IArena a, int ladderdata){
+        b.getRelative(x, y, z).setType(Material.LADDER);
+        b.getRelative(x, y, z).setData((byte)ladderdata);
+        a.addPlacedBlock(b.getRelative(x, y, z));
     }
 }

@@ -81,6 +81,15 @@ public class PAFBungeecordRedisApi implements Party {
     }
 
     @Override
+    public void promotePlayer(Player owner, Player target){}
+
+    @Override
+    public void warp(Player owner){}
+
+    @Override
+    public void chat(Player player, String message){}
+
+    @Override
     public boolean isInternal() {
         return false;
     }

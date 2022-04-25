@@ -33,6 +33,7 @@ import com.andrei1058.bedwars.configuration.ArenaConfig;
 import net.md_5.bungee.api.chat.ClickEvent;
 import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -277,6 +278,8 @@ public class SetupSession implements ISetupSession {
                 }
             }
         }, 90L);
+
+
     }
 
     @Override

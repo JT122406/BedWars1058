@@ -36,10 +36,12 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.server.v1_16_R1.*;
 import org.bukkit.Color;
 import org.bukkit.Location;
-import org.bukkit.Particle;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.type.Bed;
+import org.bukkit.block.data.type.Ladder;
 import org.bukkit.block.data.type.WallSign;
 import org.bukkit.command.Command;
 import org.bukkit.craftbukkit.v1_16_R1.CraftServer;
@@ -684,5 +686,36 @@ public class v1_16_R1 extends VersionSupport {
     @Override
     public void playEffect(Player player, Location location){
         player.spawnParticle(Particle.VILLAGER_HAPPY, location, 1);
+    }
+
+    @Override
+    public void placeTowerBlocks(Block b, IArena a, TeamColor color, int x, int y,int z){
+        b.getRelative(x, y, z).setType(color.woolMaterial());
+        a.addPlacedBlock(b.getRelative(x, y, z));
+    }
+
+    @Override
+    public void placeLadder(Block b, int x, int y,int z, IArena a, int ladderdata){
+        Block block = b.getRelative(x,y,z);  //ladder block
+        block.setType(Material.LADDER);
+        Ladder ladder = (Ladder) block.getBlockData();
+        a.addPlacedBlock(block);
+        switch (ladderdata){
+            case 2:
+                ladder.setFacing(BlockFace.NORTH);
+                block.setBlockData(ladder);
+                return;
+            case 3:
+                ladder.setFacing(BlockFace.SOUTH);
+                block.setBlockData(ladder);
+                return;
+            case 4:
+                ladder.setFacing(BlockFace.WEST);
+                block.setBlockData(ladder);
+                return;
+            case 5:
+                ladder.setFacing(BlockFace.EAST);
+                block.setBlockData(ladder);
+        }
     }
 }

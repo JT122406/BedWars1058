@@ -21,6 +21,7 @@
 package com.andrei1058.bedwars.arena;
 
 import com.andrei1058.bedwars.BedWars;
+import com.andrei1058.bedwars.api.arena.GameState;
 import com.andrei1058.bedwars.api.arena.IArena;
 import com.andrei1058.bedwars.api.arena.generator.GeneratorType;
 import com.andrei1058.bedwars.api.arena.generator.IGenHolo;
@@ -142,6 +143,9 @@ public class OreGenerator implements IGenerator {
 
     @Override
     public void spawn() {
+        if (arena.getStatus() == GameState.restarting)
+            return;
+
         if (lastSpawn == 0) {
             lastSpawn = delay;
 
@@ -316,6 +320,9 @@ public class OreGenerator implements IGenerator {
 
     @Override
     public void rotate() {
+        if (item == null)
+            return;
+
         if (up) {
             if (rotate >= 540) {
                 up = false;
@@ -395,8 +402,7 @@ public class OreGenerator implements IGenerator {
         //if (getType() == GeneratorType.EMERALD || getType() == GeneratorType.DIAMOND) {
         rotation.add(this);
         for (Language lan : Language.getLanguages()) {
-            IGenHolo h = armorStands.get(lan.getIso());
-            if (h == null) {
+            if (armorStands.get(lan.getIso()) == null) {
                 armorStands.put(lan.getIso(), new HoloGram(lan.getIso()));
             }
         }

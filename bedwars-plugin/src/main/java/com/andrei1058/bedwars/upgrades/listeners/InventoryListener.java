@@ -1,6 +1,7 @@
 /*
  * BedWars1058 - A bed wars mini-game.
  * Copyright (C) 2021 Andrei Dascălu
+ 
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,16 +36,12 @@ public class InventoryListener implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
-        if (e.isCancelled()) return;
-        if (!(e.getWhoClicked() instanceof Player)) return;
+        if (e.isCancelled()  || !(e.getWhoClicked() instanceof Player)) return;
         IArena a = Arena.getArenaByPlayer((Player) e.getWhoClicked());
         if (a == null) return;
-        if (a.isSpectator((Player) e.getWhoClicked())) return;
-        if (!UpgradesManager.isWatchingUpgrades(e.getWhoClicked().getUniqueId())) return;
+        if (a.isSpectator((Player) e.getWhoClicked())  && !UpgradesManager.isWatchingUpgrades(e.getWhoClicked().getUniqueId())) return;
         e.setCancelled(true);
-        if (e.getCurrentItem() == null) return;
-        if (e.getCurrentItem().getType() == Material.AIR) return;
-
+        if (e.getCurrentItem() == null  || e.getCurrentItem().getType() == Material.AIR) return;
         MenuContent mc = UpgradesManager.getMenuContent(e.getCurrentItem());
         if (mc == null) return;
         mc.onClick((Player) e.getWhoClicked(), e.getClick(), a.getTeam((Player) e.getWhoClicked()));
