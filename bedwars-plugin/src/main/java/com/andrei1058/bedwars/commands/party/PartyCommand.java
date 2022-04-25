@@ -20,7 +20,10 @@
 
 package com.andrei1058.bedwars.commands.party;
 
+import com.andrei1058.bedwars.BedWars;
+import com.andrei1058.bedwars.api.arena.IArena;
 import com.andrei1058.bedwars.api.language.Messages;
+import com.andrei1058.bedwars.arena.Arena;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -188,6 +191,25 @@ public class PartyCommand extends BukkitCommand {
                 } else if (!getParty().isOwner(p)) {
                     p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_INSUFFICIENT_PERMISSIONS));
                     return true;
+                }
+
+                //join game
+                if (Arena.isInArena(p)){
+                    IArena arena = Arena.getArenaByPlayer(p);
+                    if ((arena.getMaxPlayers() - arena.getPlayers().size()) >= 1){
+                        //player joins game
+                        for (Player p1 : getParty().getMembers(p)) {
+                            if (!arena.getPlayers().contains(p1))
+                                arena.addPlayer(p1, true);
+                        }
+                    }
+                    else
+                    {
+                        for (Player p1 : getParty().getMembers(p)) {
+                            if (!arena.getPlayers().contains(p1))
+                                arena.addSpectator(p1, false, p.getLocation());
+                        }
+                    }
                 }
                 getParty().warp(p);
                 //send success message to players
