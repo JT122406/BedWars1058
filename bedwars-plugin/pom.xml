@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>bedwars-plugin</artifactId>
     <packaging>jar</packaging>
-    <version>${parent.version}</version>
+    <version>${project.parent.version}</version>
 
     <pluginRepositories>
         <pluginRepository>
@@ -90,13 +90,13 @@
         <dependency>
             <groupId>de.simonsator</groupId>
             <artifactId>DevelopmentPAFSpigot</artifactId>
-            <version>1.0.66</version>
+            <version>1.0.67</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.alessiodp.parties</groupId>
             <artifactId>parties-api</artifactId>
-            <version>3.2.2</version>
+            <version>3.2.4</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -209,7 +209,7 @@
         </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>
-            <artifactId>spigot</artifactId>
+            <artifactId>spigot-api</artifactId>
             <version>1.8.8-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
