@@ -163,11 +163,14 @@ public class Internal implements Party {
     }
 
     @Override
-    public void chat(Player player, Player target, String message){
+    public void chat(Player player, String message){
         if (hasParty(player)){
-            for (Party p: Internal.getParites()) {
-                if (p.members.contains(player)  && p.members.contains(target)){
-                    target.sendMessage(message);
+            for (Party p : Internal.getParites()) {
+                if (p.members.contains(player)){
+                    for (Player p1:p.members) {
+                        p1.sendMessage(message);
+                    }
+
                     break;
                 }
 

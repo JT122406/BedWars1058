@@ -50,7 +50,7 @@ public interface Party {
 
     void warp(Player owner, Player target);
 
-    void chat(Player player, Player target, String message);
+    void chat(Player player, String message);
 
     boolean isInternal();
 }

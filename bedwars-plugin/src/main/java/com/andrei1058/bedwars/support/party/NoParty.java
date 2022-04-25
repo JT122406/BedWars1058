@@ -74,7 +74,7 @@ public class NoParty implements Party {
     public void warp(Player owner, Player target){}
 
     @Override
-    public void chat(Player player, Player target, String message){}
+    public void chat(Player player, String message){}
 
     @Override
     public boolean isInternal() {
