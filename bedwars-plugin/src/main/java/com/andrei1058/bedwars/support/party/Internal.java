@@ -176,8 +176,10 @@ public class Internal implements Party {
             for (Party p : Internal.getParites()) {
                 if (p.members.contains(player)){
                     for (Player p1:p.members) {
-                        if (!p1.equals(player))
-                            p1.sendMessage(message);
+                        if (p1.equals(player))
+                            message.replace(player.getName(), "you");
+
+                        p1.sendMessage(message);
                     }
                     break;
                 }
