@@ -22,6 +22,7 @@ package com.andrei1058.bedwars.support.party;
 
 import com.andrei1058.bedwars.api.language.Messages;
 import com.andrei1058.bedwars.api.party.Party;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -154,6 +155,24 @@ public class Internal implements Party {
         Party p = getParty(owner);
         if (p != null) {
             p.owner = target;
+        }
+    }
+
+    @Override
+    public void warp(Player owner, Player target){
+
+    }
+
+    @Override
+    public void chat(Player player, Player target, String message){
+        if (hasParty(player)){
+            for (Party p: Internal.getParites()) {
+                if (p.members.contains(player)  && p.members.contains(target)){
+                    target.sendMessage(message);
+                    break;
+                }
+
+            }
         }
     }
 

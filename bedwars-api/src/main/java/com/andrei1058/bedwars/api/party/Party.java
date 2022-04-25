@@ -48,5 +48,9 @@ public interface Party {
 
     void promotePlayer(Player owner, Player target);
 
+    void warp(Player owner, Player target);
+
+    void chat(Player player, Player target, String message);
+
     boolean isInternal();
 }

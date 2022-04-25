@@ -137,6 +137,7 @@ public class PartyCommand extends BukkitCommand {
                 getParty().disband(p);
                 break;
             case "remove":
+            case "kick":
                 if (args.length == 1) {
                     p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_REMOVE_USAGE));
                     return true;
@@ -164,14 +165,22 @@ public class PartyCommand extends BukkitCommand {
                     p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_INSUFFICIENT_PERMISSIONS));
                     return true;
                 }
-                Player target = Bukkit.getPlayer(args[1]);
-                if (!getParty().isMember(p, target)){
+                Player target1 = Bukkit.getPlayer(args[1]);
+                if (!getParty().isMember(p, target1)){
                     p.sendMessage(getMsg(p, Messages.COMMAND_PARTY_REMOVE_DENIED_TARGET_NOT_PARTY_MEMBER).replace("{player}", args[1]));
                     return true;
                 }
-                getParty().promotePlayer(p, target);
+                getParty().promotePlayer(p, target1);
                 break;
+            case "warp":
+                Player target2 = Bukkit.getPlayer(args[1]);
+                getParty().warp(p, target2);
+                break;
+            case "chat":
 
+                Player target3 = Bukkit.getPlayer(args[1]);
+                getParty().chat(p, target3, args[2]);
+                break;
             default:
                 sendPartyCmds(p);
                 break;

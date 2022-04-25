@@ -97,6 +97,15 @@ public class PAF implements Party {
     }
 
     @Override
+    public void promotePlayer(Player owner, Player target){}
+
+    @Override
+    public void warp(Player owner, Player target){}
+
+    @Override
+    public void chat(Player player, Player target, String message){}
+
+    @Override
     public boolean isInternal() {
         return false;
     }
