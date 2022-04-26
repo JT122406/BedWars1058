@@ -232,7 +232,7 @@ public class PartyCommand extends BukkitCommand {
                     return true;
                 }
 
-                String message = getMsg(p, Messages.COMMAND_PARTY_CHAT_PREFIX.replace("{sender}", p.getName())) + args[1];  //I will make this configurable
+                String message = getMsg(p, Messages.COMMAND_PARTY_CHAT_PREFIX).replace("{sender}", p.getName()) + args[1];  //I will make this configurable
                 if (args.length > 1)
                     for (int i = 2; i < args.length; i++){
                         message = message + args[i];

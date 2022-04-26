@@ -22,6 +22,7 @@ package com.andrei1058.bedwars.support.party;
 
 import com.andrei1058.bedwars.api.language.Messages;
 import com.andrei1058.bedwars.api.party.Party;
+import com.andrei1058.bedwars.arena.Arena;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Contract;
@@ -164,7 +165,7 @@ public class Internal implements Party {
         if (p != null){
             Location location = owner.getLocation();
             for (Player p1 : p.members) {
-                if (!p1.equals(owner))
+                if (!p1.equals(owner)  && Arena.isInArena(p1))
                     p1.teleport(location);
             }
         }
