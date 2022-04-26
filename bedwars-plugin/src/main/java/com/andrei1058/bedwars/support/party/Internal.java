@@ -165,7 +165,7 @@ public class Internal implements Party {
         if (p != null){
             Location location = owner.getLocation();
             for (Player p1 : p.members) {
-                if (!p1.equals(owner)  && Arena.isInArena(p1))
+                if (!p1.equals(owner)  && !Arena.isInArena(p1))
                     p1.teleport(location);
             }
         }

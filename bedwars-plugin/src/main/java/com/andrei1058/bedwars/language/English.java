@@ -110,7 +110,7 @@ public class English extends Language {
         yml.addDefault(Messages.COMMAND_PARTY_DISBAND_SUCCESS, "{prefix}&eParty disbanded!");
         yml.addDefault(Messages.COMMAND_PARTY_REMOVE_USAGE, "{prefix}&7Usage: &e/party remove <player>");
         yml.addDefault(Messages.COMMAND_PARTY_REMOVE_SUCCESS, "{prefix}&7{player} &ewas removed from the party,");
-        yml.addDefault(Messages.COMMAND_PARTY_WARP_SUCCESS, "{prefix}&7{player} &eParty was teleported to Owner");
+        yml.addDefault(Messages.COMMAND_PARTY_WARP_SUCCESS, "{prefix}&7 &eParty was teleported to Owner");
         yml.addDefault(Messages.COMMAND_PARTY_PROMOTE_SUCCESS, "{prefix}&7 &eYou successfully promoted {player} to owner");
         yml.addDefault(Messages.COMMAND_PARTY_OWNER, "{prefix} &eYou have been promoted to party owner");
         yml.addDefault(Messages.COMMAND_PARTY_NEW_OWNER, "{prefix}&7 &e{player} has been promoted to owner");
