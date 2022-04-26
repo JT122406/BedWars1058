@@ -20,6 +20,7 @@
 
 package com.andrei1058.bedwars.support.party;
 
+import com.andrei1058.bedwars.api.arena.IArena;
 import com.andrei1058.bedwars.api.language.Messages;
 import com.andrei1058.bedwars.api.party.Party;
 import com.andrei1058.bedwars.arena.Arena;
@@ -165,8 +166,14 @@ public class Internal implements Party {
         if (p != null){
             Location location = owner.getLocation();
             for (Player p1 : p.members) {
-                if (!p1.equals(owner)  && !Arena.isInArena(p1))
+                if (!p1.equals(owner)  && !Arena.isInArena(p1)){
                     p1.teleport(location);
+                } else if (!p1.equals(owner)  && Arena.isInArena(p1)  && !Arena.isInArena(owner)) {
+                    IArena arena = Arena.getArenaByPlayer(p1);
+                    arena.removePlayer(p1, true);
+                    p1.teleport(location);
+                }
+
             }
         }
     }
