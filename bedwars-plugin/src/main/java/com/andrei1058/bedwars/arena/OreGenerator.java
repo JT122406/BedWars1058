@@ -320,6 +320,9 @@ public class OreGenerator implements IGenerator {
 
     @Override
     public void rotate() {
+        if (item == null)
+            return;
+
         if (up) {
             if (rotate >= 540) {
                 up = false;
