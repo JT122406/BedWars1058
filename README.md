@@ -132,3 +132,5 @@ Chosen by hundreds of servers all around the world.
 
 # Contact
 [![Discord Server](https://discordapp.com/api/guilds/201345265821679617/widget.png?style=banner3)](https://discord.gg/XdJfN2X)
+
+Lightning-MC Bedwars Version
