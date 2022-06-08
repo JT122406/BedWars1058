@@ -38,6 +38,7 @@ import com.andrei1058.bedwars.arena.spectator.SpectatorListeners;
 import com.andrei1058.bedwars.arena.tasks.OneTick;
 import com.andrei1058.bedwars.arena.tasks.Refresh;
 import com.andrei1058.bedwars.arena.upgrades.BaseListener;
+import com.andrei1058.bedwars.arena.upgrades.HealPoolListner;
 import com.andrei1058.bedwars.commands.bedwars.MainCommand;
 import com.andrei1058.bedwars.commands.leave.LeaveCommand;
 import com.andrei1058.bedwars.commands.party.PartyCommand;
@@ -296,7 +297,13 @@ public class BedWars extends JavaPlugin {
 
         // Register events
         registerEvents(new EnderPearlLanded(), new QuitAndTeleportListener(), new BreakPlace(), new DamageDeathMove(), new Inventory(), new Interact(), new RefreshGUI(), new HungerWeatherSpawn(), new CmdProcess(),
-                new FireballListener(), new EggBridge(), new SpectatorListeners(), new BaseListener(), new TargetListener(), new LangListener(), new Warnings(this), new ChatAFK(), new GameEnd());
+                new FireballListener(), new EggBridge(), new SpectatorListeners(), new BaseListener(), new TargetListener(), new LangListener(), new Warnings(this), new ChatAFK());
+
+        Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
+                if (config.getBoolean(ConfigPath.GENERAL_CONFIGURATION_HEAL_POOL))  //heal pool
+                    registerEvents(new HealPoolListner());
+        });
+
         if (getServerType() == ServerType.BUNGEE) {
             if (autoscale) {
                 //registerEvents(new ArenaListeners());
@@ -363,7 +370,8 @@ public class BedWars extends JavaPlugin {
         //new Refresh().runTaskTimer(this, 20L, 20L);
 
         if (config.getBoolean(ConfigPath.GENERAL_CONFIGURATION_PERFORMANCE_ROTATE_GEN)) {
-            Bukkit.getScheduler().runTaskTimerAsynchronously(this, new OneTick(), 120, 1);
+            //new OneTick().runTaskTimer(this, 120, 1);
+            Bukkit.getScheduler().runTaskTimer(this, new OneTick(), 120, 1);
         }
 
         /* Register NMS entities */

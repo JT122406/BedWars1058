@@ -436,7 +436,5 @@ public abstract class VersionSupport {
 
     public abstract void clearArrowsFromPlayerBody(Player player);
 
-    public abstract void placeTowerBlocks(Block b, IArena a, TeamColor color, int x, int y,int z);
-
-    public abstract void placeLadder(Block b, int x, int y, int z, IArena a, int ladderdata);
+    public abstract void playEffect(Player player, Location location);
 }
