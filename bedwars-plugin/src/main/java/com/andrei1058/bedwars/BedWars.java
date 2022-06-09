@@ -31,7 +31,6 @@ import com.andrei1058.bedwars.api.server.ServerType;
 import com.andrei1058.bedwars.api.server.VersionSupport;
 import com.andrei1058.bedwars.arena.Arena;
 import com.andrei1058.bedwars.arena.ArenaManager;
-import com.andrei1058.bedwars.arena.VoidChunkGenerator;
 import com.andrei1058.bedwars.arena.despawnables.TargetListener;
 import com.andrei1058.bedwars.arena.feature.SpoilPlayerTNTFeature;
 import com.andrei1058.bedwars.arena.spectator.SpectatorListeners;
@@ -331,6 +330,8 @@ public class BedWars extends JavaPlugin {
 
         // Register setup-holograms fix
         registerEvents(new ChunkLoad());
+        
+        registerEvents(new InvisibilityPotionListener());
 
 
         /* Load join signs. */
