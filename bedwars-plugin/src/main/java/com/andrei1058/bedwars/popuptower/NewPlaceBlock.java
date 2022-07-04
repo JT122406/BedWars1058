@@ -16,9 +16,7 @@ public class NewPlaceBlock {
         int y = Integer.parseInt(xyz.split(", ")[1]);
         int z = Integer.parseInt(xyz.split(", ")[2]);
         if (b.getRelative(x, y, z).getType().equals(Material.AIR)) {
-            Iterator var10 = Arena.getArenaByPlayer(p).getRegionsList().iterator();
-            while(var10.hasNext()) {
-                Region r = (Region)var10.next();
+            for (Region r : Arena.getArenaByPlayer(p).getRegionsList()) {
                 if (r.isInRegion(b.getRelative(x, y, z).getLocation())) {
                     return;
                 }

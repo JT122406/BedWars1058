@@ -168,7 +168,7 @@ public class Internal implements Party {
         return Collections.unmodifiableList(parites);
     }
 
-    class Party {
+    static class Party {
 
         private List<Player> members = new ArrayList<>();
         private Player owner;
