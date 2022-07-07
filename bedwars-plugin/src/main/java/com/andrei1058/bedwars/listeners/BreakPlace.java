@@ -40,6 +40,7 @@ import com.andrei1058.bedwars.popuptower.TowerEast;
 import com.andrei1058.bedwars.popuptower.TowerNorth;
 import com.andrei1058.bedwars.popuptower.TowerSouth;
 import com.andrei1058.bedwars.popuptower.TowerWest;
+import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -312,7 +313,8 @@ public class BreakPlace implements Listener {
                                             p.sendMessage(getMsg(p, Messages.INTERACT_CANNOT_BREAK_OWN_BED));
                                             e.setCancelled(true);
                                             if (e.getPlayer().getLocation().getBlock().getType().toString().contains("BED")) {
-                                                e.getPlayer().teleport(e.getPlayer().getLocation().add(0, 0.5, 0));
+                                                PaperLib.teleportAsync(e.getPlayer(), e.getPlayer().getLocation().add(0, 0.5, 0));
+                                               // e.getPlayer().teleport(e.getPlayer().getLocation().add(0, 0.5, 0));
                                             }
                                         } else {
                                             e.setCancelled(false);
