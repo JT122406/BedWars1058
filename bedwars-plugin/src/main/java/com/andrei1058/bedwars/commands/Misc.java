@@ -23,7 +23,6 @@ package com.andrei1058.bedwars.commands;
 import com.andrei1058.bedwars.BedWars;
 import com.andrei1058.bedwars.arena.SetupSession;
 import io.papermc.lib.PaperLib;
-import net.minecraft.server.v1_8_R3.PacketPlayOutEntityEquipment;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;

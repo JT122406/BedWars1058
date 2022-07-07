@@ -8,8 +8,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
-import java.util.Iterator;
-
 public class NewPlaceBlock {
     public NewPlaceBlock(Block b, String xyz, TeamColor color, Player p, boolean ladder, int ladderdata) {
         int x = Integer.parseInt(xyz.split(", ")[0]);

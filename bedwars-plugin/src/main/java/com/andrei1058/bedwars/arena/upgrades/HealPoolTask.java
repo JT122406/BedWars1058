@@ -28,7 +28,7 @@ public class HealPoolTask extends BukkitRunnable {
 
     public HealPoolTask(ITeam bwt){
         this.bwt = bwt;
-        if (bwt.getSpawn() == null  || bwt == null){
+        if (bwt.getSpawn() == null){
             removeForTeam(this.bwt);
             cancel();
             return;
@@ -86,7 +86,7 @@ public class HealPoolTask extends BukkitRunnable {
         return false;
     }
     public static void removeForArena(IArena a){
-        if (healPoolTasks.isEmpty()  || (a == null)  || healPoolTasks == null) return;
+        if (healPoolTasks.isEmpty() || a == null) return;
         for (HealPoolTask hpt: healPoolTasks) {
             if (hpt == null) continue;
             if (hpt.getArena().equals(a)){
@@ -98,7 +98,7 @@ public class HealPoolTask extends BukkitRunnable {
     }
 
     public  static void removeForArena(String a){
-        if (healPoolTasks.isEmpty()  || (a == null)  || healPoolTasks == null) return;
+        if (healPoolTasks.isEmpty() || a == null) return;
         for (HealPoolTask hpt: healPoolTasks) {
             if (hpt == null) continue;
             if (hpt.getArena().getWorldName().equals(a)){
@@ -110,7 +110,7 @@ public class HealPoolTask extends BukkitRunnable {
     }
 
     public  static void removeForTeam(ITeam team){
-        if (healPoolTasks.isEmpty()  || (team == null)  || healPoolTasks == null) return;
+        if (healPoolTasks.isEmpty() || team == null) return;
         for (HealPoolTask hpt: healPoolTasks) {
             if (hpt == null) continue;
             if (hpt.getBwt().equals(team)){
