@@ -226,6 +226,8 @@ public class ConfigPath {
 
     public static final String GENERAL_CONFIGURATION_PERFORMANCE_PATH = "performance-settings";
     public static final String GENERAL_CONFIGURATION_PERFORMANCE_ROTATE_GEN = GENERAL_CONFIGURATION_PERFORMANCE_PATH + ".rotate-generators";
+
+    public static final String GENERAL_CONFIGURATION_PERFORMANCE_ROTATE_GEN_SPEED = GENERAL_CONFIGURATION_PERFORMANCE_PATH + ".rotate-generators-speed";
     public static final String GENERAL_CONFIGURATION_PERFORMANCE_SPOIL_TNT_PLAYERS = GENERAL_CONFIGURATION_PERFORMANCE_PATH + ".spoil-tnt-players";
 
     public static final String SHOP_SETTINGS_PATH = "shop-settings";
