@@ -22,10 +22,12 @@ public class MoneyPerMinuteTask {
         if (money < 1){
             return;
         }
-        task = Bukkit.getScheduler().runTaskTimer( BedWars.plugin, () -> {
-            for (Player p : arena.getPlayers()) {
-                    BedWars.getEconomy ().giveMoney ( p, money );
-                    p.sendMessage ( Language.getMsg ( p, Messages.MONEY_REWARD_PER_MINUTE ).replace ( "{money}", String.valueOf ( money ) ) );
+        task = Bukkit.getScheduler().runTaskTimerAsynchronously(BedWars.plugin, () -> {
+            if (arena != null  && !arena.getPlayers().isEmpty()){
+                for (Player p : arena.getPlayers()) {
+                    BedWars.getEconomy().giveMoney( p, money );
+                    p.sendMessage( Language.getMsg( p, Messages.MONEY_REWARD_PER_MINUTE ).replace( "{money}", String.valueOf ( money )));
+                }
             }
         }, 60 * 20, 60 * 20);
     }
