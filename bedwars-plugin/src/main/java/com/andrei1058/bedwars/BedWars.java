@@ -55,6 +55,7 @@ import com.andrei1058.bedwars.listeners.arenaselector.ArenaSelectorListener;
 import com.andrei1058.bedwars.listeners.blockstatus.BlockStatusListener;
 import com.andrei1058.bedwars.listeners.chat.ChatAFK;
 import com.andrei1058.bedwars.listeners.chat.ChatFormatting;
+import com.andrei1058.bedwars.listeners.gensplit.GenSplit;
 import com.andrei1058.bedwars.listeners.joinhandler.*;
 import com.andrei1058.bedwars.lobbysocket.ArenaSocket;
 import com.andrei1058.bedwars.lobbysocket.LoadedUsersCleaner;
@@ -297,6 +298,15 @@ public class BedWars extends JavaPlugin {
         // Register events
         registerEvents(new EnderPearlLanded(), new QuitAndTeleportListener(), new BreakPlace(), new DamageDeathMove(), new Inventory(), new Interact(), new RefreshGUI(), new HungerWeatherSpawn(), new CmdProcess(),
                 new FireballListener(), new EggBridge(), new SpectatorListeners(), new BaseListener(), new TargetListener(), new LangListener(), new Warnings(this), new ChatAFK());
+
+
+
+
+
+
+        if (config.getBoolean(ConfigPath.GENERAL_CONFIGURATION_ENABLE_GENERATOR_SPLIT))  //check config for gen split
+            registerEvents(new GenSplit());
+
         if (getServerType() == ServerType.BUNGEE) {
             if (autoscale) {
                 //registerEvents(new ArenaListeners());

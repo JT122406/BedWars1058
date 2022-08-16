@@ -96,6 +96,7 @@ public class MainConfig extends ConfigManager {
 
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_ALLOW_FIRE_EXTINGUISH, true);
 
+        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_ENABLE_GENERATOR_SPLIT, true);
         // tnt jump category
         yml.addDefault(ConfigPath.GENERAL_TNT_JUMP_BARYCENTER_IN_Y, 0.5);
         yml.addDefault(ConfigPath.GENERAL_TNT_JUMP_STRENGTH_REDUCTION, 5);
