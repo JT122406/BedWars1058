@@ -328,7 +328,7 @@ public class SQLite implements Database {
                             ps.executeUpdate();
                         }
                     } else {
-                        try (PreparedStatement ps = displayName == null ? connection.prepareStatement("UPDATE player_levels SET level=?, xp=? WHERE uuid = '" + player.toString() + "';") : connection.prepareStatement("UPDATE player_levels SET level=?, xp=?, name=?, next_cost=? WHERE uuid = '" + player.toString() + "';")) {
+                        try (PreparedStatement ps = displayName == null ? connection.prepareStatement("UPDATE player_levels SET level=?, xp=? WHERE uuid = '" + player + "';") : connection.prepareStatement("UPDATE player_levels SET level=?, xp=?, name=?, next_cost=? WHERE uuid = '" + player + "';")) {
                             ps.setInt(1, level);
                             ps.setInt(2, xp);
                             if (displayName != null) {
@@ -354,7 +354,7 @@ public class SQLite implements Database {
                 try (ResultSet rs = statement.executeQuery("SELECT iso FROM player_language WHERE uuid = '" + player.toString() + "';")) {
                     if (rs.next()) {
                         try (Statement st = connection.createStatement()) {
-                            st.executeUpdate("UPDATE player_language SET iso='" + iso + "' WHERE uuid = '" + player.toString() + "';");
+                            st.executeUpdate("UPDATE player_language SET iso='" + iso + "' WHERE uuid = '" + player + "';");
                         }
                     } else {
                         try (PreparedStatement st = connection.prepareStatement("INSERT INTO player_language (uuid, iso) VALUES (?, ?);")) {

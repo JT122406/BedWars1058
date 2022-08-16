@@ -144,7 +144,8 @@ public class Misc {
                     continue;
                 Location l = b.getLocation().clone().add(0, 1, 0);
                 for (Location location : locations) {
-                    if (setupSession.getConfig().compareArenaLoc(location, b.getLocation().add(0, 1, 0))) continue;
+                    if (setupSession.getConfig().compareArenaLoc(location, b.getLocation().add(0, 1, 0))) {
+                    }
                 }
                 if (b.getType() == target) {
                     if (layout_z_minus == l.clone().add(0, 0, -1).getBlock().getType() &&

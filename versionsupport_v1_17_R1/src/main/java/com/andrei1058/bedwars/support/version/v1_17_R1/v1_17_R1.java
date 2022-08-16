@@ -76,7 +76,6 @@ import org.bukkit.craftbukkit.v1_17_R1.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_17_R1.entity.CraftTNTPrimed;
 import org.bukkit.craftbukkit.v1_17_R1.inventory.CraftItemStack;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.*;
 import org.bukkit.event.inventory.InventoryEvent;
 import org.bukkit.inventory.meta.ItemMeta;

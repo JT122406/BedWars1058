@@ -5,7 +5,7 @@
     <parent>
         <artifactId>BedWars1058</artifactId>
         <groupId>com.andrei1058.bedwars</groupId>
-        <version>22.7.7-Lightning</version>
+        <version>22.8.16-Lightning</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 

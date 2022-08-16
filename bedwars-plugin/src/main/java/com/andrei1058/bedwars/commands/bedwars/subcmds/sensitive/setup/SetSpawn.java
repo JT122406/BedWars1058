@@ -109,7 +109,7 @@ public class SetSpawn extends SubCommand {
                         }
                     }
                     if (remainging.toString().length() > 0) {
-                        p.sendMessage(ss.getPrefix() + "Remaining: " + remainging.toString());
+                        p.sendMessage(ss.getPrefix() + "Remaining: " + remainging);
                     }
                 }
             }

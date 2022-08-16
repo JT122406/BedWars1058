@@ -56,7 +56,7 @@ public class ShoutCommand extends BukkitCommand {
             sb.append(ar).append(" ");
         }
 
-        p.chat("!" + sb.toString());
+        p.chat("!" + sb);
         return false;
     }
 
