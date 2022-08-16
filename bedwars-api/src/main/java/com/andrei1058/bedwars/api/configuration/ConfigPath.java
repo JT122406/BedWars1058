@@ -141,6 +141,8 @@ public class ConfigPath {
     public static final String GENERAL_CONFIGURATION_HEAL_POOL = "heal-pool";
     public static final String GENERAL_CONFIGURATION_HEAL_POOL_SEEN_TEAM_ONLY = "heal-pool-seen-by-team-only";
 
+    public static final String GENERAL_CONFIGURATION_ENABLE_GENERATOR_SPLIT = "enable-generator-split";
+
     public static final String GENERAL_CONFIGURATION_ARENA_SELECTOR_PATH = "arena-gui";
     public static final String GENERAL_CONFIGURATION_ARENA_SELECTOR_SETTINGS_SIZE = GENERAL_CONFIGURATION_ARENA_SELECTOR_PATH + ".settings.inv-size";
     public static final String GENERAL_CONFIGURATION_ARENA_SELECTOR_SETTINGS_SHOW_PLAYING = GENERAL_CONFIGURATION_ARENA_SELECTOR_PATH + ".settings.show-playing";

@@ -47,6 +47,7 @@ import com.andrei1058.bedwars.commands.shout.ShoutCommand;
 import com.andrei1058.bedwars.configuration.*;
 import com.andrei1058.bedwars.database.Database;
 import com.andrei1058.bedwars.database.SQLite;
+import com.andrei1058.bedwars.gensplit.GenSplit;
 import com.andrei1058.bedwars.halloween.HalloweenSpecial;
 import com.andrei1058.bedwars.language.*;
 import com.andrei1058.bedwars.levels.internal.InternalLevel;
@@ -304,6 +305,9 @@ public class BedWars extends JavaPlugin {
         Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
                 if (config.getBoolean(ConfigPath.GENERAL_CONFIGURATION_HEAL_POOL))  //heal pool
                     registerEvents(new HealPoolListner());
+
+                 if (config.getBoolean(ConfigPath.GENERAL_CONFIGURATION_ENABLE_GENERATOR_SPLIT))  //check config for gen split
+                     registerEvents(new GenSplit());
         });
 
         if (getServerType() == ServerType.BUNGEE) {
