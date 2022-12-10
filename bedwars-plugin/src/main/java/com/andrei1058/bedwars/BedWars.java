@@ -77,7 +77,6 @@ import com.andrei1058.bedwars.support.party.PartiesAdapter;
 import com.andrei1058.bedwars.support.vault.*;
 import com.andrei1058.bedwars.support.vipfeatures.VipFeatures;
 import com.andrei1058.bedwars.support.vipfeatures.VipListeners;
-import com.andrei1058.spigotutils.SpigotUpdater;
 import com.andrei1058.vipfeatures.api.IVipFeatures;
 import com.andrei1058.vipfeatures.api.MiniGameAlreadyRegistered;
 import io.papermc.lib.PaperLib;
@@ -532,10 +531,6 @@ public class BedWars extends JavaPlugin {
                 miniGameAlreadyRegistered.printStackTrace();
             }
         }
-
-        /* Check updates */
-        new SpigotUpdater(this, 50942, true).checkUpdate();
-
 
         Bukkit.getScheduler().runTaskLater(this, () -> getLogger().info("This server is running in " + getServerType().toString() + " with auto-scale " + autoscale), 100L);
 
