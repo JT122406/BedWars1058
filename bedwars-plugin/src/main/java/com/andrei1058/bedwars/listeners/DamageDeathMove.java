@@ -326,28 +326,23 @@ public class DamageDeathMove implements Listener {
 
     @EventHandler
     public void onDeath(PlayerDeathEvent e) {
-        Player victim = e.getEntity(), killer = e.getEntity().getKiller();
-        ITeam killersTeam = null;
-        IArena a = Arena.getArenaByPlayer(victim);
-        if ((BedWars.getServerType() == ServerType.MULTIARENA && BedWars.getLobbyWorld().equals(e.getEntity().getWorld().getName())) || a != null) {
+        Player victim = e.getEntity();
+        if ((BedWars.getServerType() == ServerType.MULTIARENA && BedWars.getLobbyWorld().equals(victim.getWorld().getName()))) {
             e.setDeathMessage(null);
+            return;
         }
+        IArena a = Arena.getArenaByPlayer(victim);
         if (a != null) {
-            if (a.isSpectator(victim)) {
+            ITeam killersTeam = null;
+            e.setDeathMessage(null);
+            if (a.isSpectator(victim) || a.getStatus() != GameState.playing) {
                 victim.spigot().respawn();
                 return;
             }
-            if (a.getStatus() != GameState.playing) {
-                victim.spigot().respawn();
-                return;
-            }
+
             EntityDamageEvent damageEvent = e.getEntity().getLastDamageCause();
 
             ITeam victimsTeam = a.getTeam(victim);
-            if (a.getStatus() != GameState.playing) {
-                victim.spigot().respawn();
-                return;
-            }
             if (victimsTeam == null) {
                 victim.spigot().respawn();
                 return;
@@ -356,6 +351,7 @@ public class DamageDeathMove implements Listener {
             BedWars.nms.clearArrowsFromPlayerBody(victim);
             String message = victimsTeam.isBedDestroyed() ? Messages.PLAYER_DIE_UNKNOWN_REASON_FINAL_KILL : Messages.PLAYER_DIE_UNKNOWN_REASON_REGULAR;
             PlayerKillEvent.PlayerKillCause cause = victimsTeam.isBedDestroyed() ? PlayerKillEvent.PlayerKillCause.UNKNOWN_FINAL_KILL : PlayerKillEvent.PlayerKillCause.UNKNOWN;
+            Player killer = e.getEntity().getKiller();
             if (damageEvent != null) {
                 if (damageEvent.getCause() == EntityDamageEvent.DamageCause.ENTITY_EXPLOSION) {
                     LastHit lh = getLastHit(victim);
