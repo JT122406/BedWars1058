@@ -564,23 +564,24 @@ public class DamageDeathMove implements Listener {
 
     @EventHandler
     public void onMove(PlayerMoveEvent e) {
-        if (Arena.isInArena(e.getPlayer())) {
-            IArena a = Arena.getArenaByPlayer(e.getPlayer());
+        Player p = e.getPlayer();
+        if (Arena.isInArena(p)) {
+            IArena a = Arena.getArenaByPlayer(p);
             if (e.getFrom().getChunk() != e.getTo().getChunk()) {
 
                 /* update armor-stands hidden by nms */
-                String iso = Language.getPlayerLanguage(e.getPlayer()).getIso();
+                String iso = Language.getPlayerLanguage(p).getIso();
                 for (IGenerator o : a.getOreGenerators()) {
-                    o.updateHolograms(e.getPlayer(), iso);
+                    o.updateHolograms(p, iso);
                 }
                 for (ITeam t : a.getTeams()) {
                     for (IGenerator o : t.getGenerators()) {
-                        o.updateHolograms(e.getPlayer(), iso);
+                        o.updateHolograms(p, iso);
                     }
                 }
                 for (ShopHolo sh : ShopHolo.getShopHolo()) {
                     if (sh.getA() == a) {
-                        sh.updateForPlayer(e.getPlayer(), iso);
+                        sh.updateForPlayer(p, iso);
                     }
                 }
 
@@ -589,72 +590,70 @@ public class DamageDeathMove implements Listener {
                     // generic hide packets
                     for (Map.Entry<Player, Integer> entry : a.getShowTime().entrySet()) {
                         if (entry.getValue() > 1) {
-                            BedWars.nms.hideArmor(entry.getKey(), e.getPlayer());
+                            BedWars.nms.hideArmor(entry.getKey(), p);
                         }
                     }
                     // if the moving player has invisible armor
-                    if (a.getShowTime().containsKey(e.getPlayer())) {
-                        for (Player p : a.getPlayers()) {
-                            nms.hideArmor(e.getPlayer(), p);
+                    if (a.getShowTime().containsKey(p)) {
+                        for (Player p1 : a.getPlayers()) {
+                            nms.hideArmor(p, p1);
                         }
                     }
-                    if (a.getShowTime().containsKey(e.getPlayer())) {
-                        for (Player p : a.getSpectators()) {
-                            nms.hideArmor(e.getPlayer(), p);
+                    if (a.getShowTime().containsKey(p)) {
+                        for (Player p1 : a.getSpectators()) {
+                            nms.hideArmor(p, p1);
                         }
                     }
                 }
             }
 
-            if (a.isSpectator(e.getPlayer()) || a.isReSpawning(e.getPlayer())) {
+            if (a.isSpectator(p) || a.isReSpawning(p)) {
                 if (e.getTo().getY() < 0) {
-                    PaperSupport.teleportC(e.getPlayer(), a.isSpectator(e.getPlayer()) ? a.getSpectatorLocation() : a.getReSpawnLocation(), PlayerTeleportEvent.TeleportCause.PLUGIN);
-                    e.getPlayer().setAllowFlight(true);
-                    e.getPlayer().setFlying(true);
+                    PaperSupport.teleportC(p, a.isSpectator(p) ? a.getSpectatorLocation() : a.getReSpawnLocation(), PlayerTeleportEvent.TeleportCause.PLUGIN);
+                    p.setAllowFlight(true);
+                    p.setFlying(true);
                     // how to remove fall velocity?
                 }
             } else {
                 if (a.getStatus() == GameState.playing) {
-                    if (e.getPlayer().getLocation().getBlockY() <= a.getYKillHeight()) {
-                        nms.voidKill(e.getPlayer());
+                    if (p.getLocation().getBlockY() <= a.getYKillHeight()) {
+                        nms.voidKill(p);
                     }
                     for (ITeam t : a.getTeams()) {
-                        if (e.getPlayer().getLocation().distance(t.getBed()) < 4) {
-                            if (t.isMember(e.getPlayer()) && t instanceof BedWarsTeam) {
-                                if (((BedWarsTeam) t).getBedHolo(e.getPlayer()) == null) continue;
-                                if (!((BedWarsTeam) t).getBedHolo(e.getPlayer()).isHidden()) {
-                                    ((BedWarsTeam) t).getBedHolo(e.getPlayer()).hide();
+                        if (p.getLocation().distance(t.getBed()) < 4) {
+                            if (t.isMember(p) && t instanceof BedWarsTeam) {
+                                if (((BedWarsTeam) t).getBedHolo(p) == null) continue;
+                                if (!((BedWarsTeam) t).getBedHolo(p).isHidden()) {
+                                    ((BedWarsTeam) t).getBedHolo(p).hide();
                                 }
                             }
                         } else {
-                            if (t.isMember(e.getPlayer()) && t instanceof BedWarsTeam) {
-                                if (((BedWarsTeam) t).getBedHolo(e.getPlayer()) == null) continue;
-                                if (((BedWarsTeam) t).getBedHolo(e.getPlayer()).isHidden()) {
-                                    ((BedWarsTeam) t).getBedHolo(e.getPlayer()).show();
+                            if (t.isMember(p) && t instanceof BedWarsTeam) {
+                                if (((BedWarsTeam) t).getBedHolo(p) == null) continue;
+                                if (((BedWarsTeam) t).getBedHolo(p).isHidden()) {
+                                    ((BedWarsTeam) t).getBedHolo(p).show();
                                 }
                             }
                         }
                     }
                     if (e.getFrom() != e.getTo()) {
-                        Arena.afkCheck.remove(e.getPlayer().getUniqueId());
-                        BedWars.getAPI().getAFKUtil().setPlayerAFK(e.getPlayer(), false);
+                        Arena.afkCheck.remove(p.getUniqueId());
+                        BedWars.getAPI().getAFKUtil().setPlayerAFK(p, false);
                     }
                 } else {
-                    if (e.getPlayer().getLocation().getBlockY() <= 0) {
-                        ITeam bwt = a.getTeam(e.getPlayer());
+                    if (p.getLocation().getBlockY() <= 0) {
+                        ITeam bwt = a.getTeam(p);
                         if (bwt != null) {
-                            PaperSupport.teleport(e.getPlayer(), bwt.getSpawn());
+                            PaperSupport.teleport(p, bwt.getSpawn());
                         } else {
-                           PaperSupport.teleport(e.getPlayer(), a.getSpectatorLocation());
+                           PaperSupport.teleport(p, a.getSpectatorLocation());
                         }
                     }
                 }
             }
-        } else {
-            if (config.getBoolean(ConfigPath.LOBBY_VOID_TELEPORT_ENABLED) && e.getPlayer().getWorld().getName().equalsIgnoreCase(config.getLobbyWorldName()) && BedWars.getServerType() == ServerType.MULTIARENA) {
-                if (e.getTo().getY() < config.getInt(ConfigPath.LOBBY_VOID_TELEPORT_HEIGHT)) {
-                    PaperSupport.teleportC(e.getPlayer(), config.getConfigLoc("lobbyLoc"), PlayerTeleportEvent.TeleportCause.PLUGIN);
-                }
+        } else if (config.getBoolean(ConfigPath.LOBBY_VOID_TELEPORT_ENABLED) && e.getPlayer().getWorld().getName().equalsIgnoreCase(config.getLobbyWorldName()) && BedWars.getServerType() == ServerType.MULTIARENA) {
+            if (e.getTo().getY() < config.getInt(ConfigPath.LOBBY_VOID_TELEPORT_HEIGHT)) {
+                PaperSupport.teleportC(e.getPlayer(), config.getConfigLoc("lobbyLoc"), PlayerTeleportEvent.TeleportCause.PLUGIN);
             }
         }
     }
