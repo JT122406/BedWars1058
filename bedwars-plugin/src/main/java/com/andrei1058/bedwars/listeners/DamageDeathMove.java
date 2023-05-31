@@ -659,16 +659,16 @@ public class DamageDeathMove implements Listener {
     public void onProjHit(ProjectileHitEvent e) {
         Projectile proj = e.getEntity();
         if (proj == null) return;
-        if (e.getEntity().getShooter() instanceof Player) {
-            IArena a = Arena.getArenaByPlayer((Player) e.getEntity().getShooter());
+        if (proj.getShooter() instanceof Player) {
+            IArena a = Arena.getArenaByPlayer((Player) proj.getShooter());
             if (a != null) {
-                if (!a.isPlayer((Player) e.getEntity().getShooter())) return;
+                if (!a.isPlayer((Player) proj.getShooter())) return;
                 String utility = "";
                 if (proj instanceof Snowball) {
                     utility = "silverfish";
                 }
                 if (!utility.isEmpty()) {
-                    spawnUtility(utility, e.getEntity().getLocation(), a.getTeam((Player) e.getEntity().getShooter()), (Player) e.getEntity().getShooter());
+                    spawnUtility(utility, proj.getLocation(), a.getTeam((Player) proj.getShooter()), (Player) proj.getShooter());
                 }
             }
         }
@@ -685,7 +685,8 @@ public class DamageDeathMove implements Listener {
 
     @EventHandler
     public void onEntityDeath(EntityDeathEvent e) {
-        if (Arena.getArenaByIdentifier(e.getEntity().getLocation().getWorld().getName()) != null) {
+        Entity entity = e.getEntity();
+        if (Arena.getArenaByIdentifier(entity.getLocation().getWorld().getName()) != null) {
             if (e.getEntityType() == EntityType.IRON_GOLEM || e.getEntityType() == EntityType.SILVERFISH) {
                 e.getDrops().clear();
                 e.setDroppedExp(0);
@@ -693,7 +694,7 @@ public class DamageDeathMove implements Listener {
         }
 
         // clean if necessary
-        nms.getDespawnablesList().remove(e.getEntity().getUniqueId());
+        nms.getDespawnablesList().remove(entity.getUniqueId());
     }
 
     @EventHandler
