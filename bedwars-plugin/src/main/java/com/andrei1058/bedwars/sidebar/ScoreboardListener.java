@@ -87,20 +87,17 @@ public class ScoreboardListener implements Listener {
 
     @EventHandler
     public void onBedDestroy(PlayerBedBreakEvent e) {
-        if (e == null) return;
-        final IArena arena = e.getArena();
-
+        if (e == null || e.getArena() == null) return;
         // refresh placeholders in case placeholders refresh is disabled
-        SidebarService.getInstance().refreshPlaceholders(arena);
+        SidebarService.getInstance().refreshPlaceholders(e.getArena());
     }
 
     @EventHandler
     public void onFinalKill(PlayerKillEvent e) {
-        if (e == null) return;
-        if (!e.getCause().isFinalKill()) return;
-        final IArena arena = e.getArena();
+        if (e == null || e.getArena() == null) return;
+        else if (!e.getCause().isFinalKill()) return;
 
         // refresh placeholders in case placeholders refresh is disabled
-        SidebarService.getInstance().refreshPlaceholders(arena);
+        SidebarService.getInstance().refreshPlaceholders(e.getArena());
     }
 }
