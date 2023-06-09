@@ -84,7 +84,7 @@ public class DamageDeathMove implements Listener {
 
     @EventHandler
     public void onDamage(EntityDamageEvent e) {
-        if (e.getEntity() instanceof Player) {
+        if (e.getEntityType() == EntityType.PLAYER) {
             Player p = (Player) e.getEntity();
             IArena a = Arena.getArenaByPlayer(p);
             if (a != null) {
@@ -153,7 +153,7 @@ public class DamageDeathMove implements Listener {
 
     @EventHandler
     public void onDamageByEntity(EntityDamageByEntityEvent e) {
-        if (e.getEntity() instanceof Player) {
+        if (e.getEntityType() == EntityType.PLAYER) {
             Player p = (Player) e.getEntity();
             IArena a = Arena.getArenaByPlayer(p);
             if (a != null) {
@@ -168,7 +168,7 @@ public class DamageDeathMove implements Listener {
 
                 Player damager = null;
                 boolean projectile = false;
-                if (e.getDamager() instanceof Player) {
+                if (e.getDamager().getType() == EntityType.PLAYER) {
                     damager = (Player) e.getDamager();
                 } else if (e.getDamager() instanceof Projectile) {
                     ProjectileSource shooter = ((Projectile) e.getDamager()).getShooter();
@@ -176,7 +176,7 @@ public class DamageDeathMove implements Listener {
                         damager = (Player) shooter;
                     } else return;
                     projectile = true;
-                } else if (e.getDamager() instanceof Player) {
+                } else if (e.getDamager().getType() == EntityType.PLAYER) {
                     damager = (Player) e.getDamager();
                     if (a.isReSpawning(damager)) {
                         e.setCancelled(true);
@@ -185,7 +185,7 @@ public class DamageDeathMove implements Listener {
                 } else if (e.getDamager() instanceof TNTPrimed) {
                     TNTPrimed tnt = (TNTPrimed) e.getDamager();
                     if (tnt.getSource() != null) {
-                        if (tnt.getSource() instanceof Player) {
+                        if (tnt.getSource().getType() == EntityType.PLAYER) {
                             damager = (Player) tnt.getSource();
                             if (damager.equals(p)) {
                                 if (tntDamageSelf > -1) {
@@ -214,7 +214,7 @@ public class DamageDeathMove implements Listener {
                             }
                         } else return;
                     }
-                } else if ((e.getDamager() instanceof Silverfish) || (e.getDamager() instanceof IronGolem)) {
+                } else if ((e.getDamager().getType() == EntityType.SILVERFISH) || (e.getDamager().getType() == EntityType.IRON_GOLEM)) {
                     LastHit lh = LastHit.getLastHit(p);
                     if (lh != null) {
                         lh.setDamager(e.getDamager());
@@ -274,14 +274,14 @@ public class DamageDeathMove implements Listener {
             }
         } else if (nms.isDespawnable(e.getEntity())) {
             Player damager;
-            if (e.getDamager() instanceof Player) {
+            if (e.getDamager().getType() == EntityType.PLAYER) {
                 damager = (Player) e.getDamager();
             } else if (e.getDamager() instanceof Projectile) {
                 Projectile proj = (Projectile) e.getDamager();
                 damager = (Player) proj.getShooter();
             } else if (e.getDamager() instanceof TNTPrimed) {
                 TNTPrimed tnt = (TNTPrimed) e.getDamager();
-                if (tnt.getSource() instanceof Player) {
+                if (tnt.getSource().getType() == EntityType.PLAYER) {
                     damager = (Player) tnt.getSource();
                 } else return;
             } else return;
@@ -357,7 +357,7 @@ public class DamageDeathMove implements Listener {
                     LastHit lh = getLastHit(victim);
                     if (lh != null) {
                         if (lh.getTime() >= System.currentTimeMillis() - 15000) {
-                            if (lh.getDamager() instanceof Player) killer = (Player) lh.getDamager();
+                            if (lh.getDamager().getType() == EntityType.PLAYER) killer = (Player) lh.getDamager();
                             if (killer != null && killer.getUniqueId().equals(victim.getUniqueId())) killer = null;
                         }
                     }
@@ -376,7 +376,7 @@ public class DamageDeathMove implements Listener {
                     LastHit lh = getLastHit(victim);
                     if (lh != null) {
                         if (lh.getTime() >= System.currentTimeMillis() - 15000) {
-                            if (lh.getDamager() instanceof Player) killer = (Player) lh.getDamager();
+                            if (lh.getDamager().getType() == EntityType.PLAYER) killer = (Player) lh.getDamager();
                             if (killer != null && killer.getUniqueId().equals(victim.getUniqueId())) killer = null;
                         }
                     }
@@ -417,7 +417,7 @@ public class DamageDeathMove implements Listener {
                     if (lh != null) {
                         // check if kicked off in the last 10 seconds
                         if (lh.getTime() >= System.currentTimeMillis() - 10000) {
-                            if (lh.getDamager() instanceof Player) killer = (Player) lh.getDamager();
+                            if (lh.getDamager().getType() == EntityType.PLAYER) killer = (Player) lh.getDamager();
                             if (killer != null && killer.getUniqueId().equals(victim.getUniqueId())) killer = null;
                             if (killer != null) {
                                 if (killer != victim) {
@@ -664,7 +664,7 @@ public class DamageDeathMove implements Listener {
             if (a != null) {
                 if (!a.isPlayer((Player) proj.getShooter())) return;
                 String utility = "";
-                if (proj instanceof Snowball) {
+                if (proj.getType() == EntityType.SNOWBALL) {
                     utility = "silverfish";
                 }
                 if (!utility.isEmpty()) {
