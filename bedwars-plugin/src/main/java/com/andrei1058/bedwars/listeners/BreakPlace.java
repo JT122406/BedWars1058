@@ -44,6 +44,7 @@ import com.andrei1058.bedwars.popuptower.TowerWest;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.EntityType;
@@ -442,6 +443,8 @@ public class BreakPlace implements Listener {
     @EventHandler
     public void onBucketEmpty(PlayerBucketEmptyEvent e) {
         if (e.isCancelled()) return;
+
+        // Lobby protection in MULTIARENA
         if (BedWars.getServerType() == ServerType.MULTIARENA) {
             if (Objects.requireNonNull(e.getPlayer().getLocation().getWorld()).getName().equalsIgnoreCase(BedWars.getLobbyWorld())) {
                 if (!isBuildSession(e.getPlayer())) {
@@ -449,68 +452,41 @@ public class BreakPlace implements Listener {
                 }
             }
         }
-        //Prevent player from placing during the removal from the arena
+
+        // Prevent player from placing during the removal from the arena
         IArena arena = Arena.getArenaByIdentifier(e.getBlockClicked().getWorld().getName());
-        if (arena != null) {
-            if (arena.getStatus() != GameState.playing) {
-                e.setCancelled(true);
-                return;
-            }
+        if (arena != null && arena.getStatus() != GameState.playing) {
+            e.setCancelled(true);
+            return;
         }
+
         Player p = e.getPlayer();
         IArena a = Arena.getArenaByPlayer(p);
         if (a != null) {
-            if (a.isSpectator(p)) {
+            // Restriction checks (spectator, respawning, not playing)
+            if (isPlayerRestrictedInArena(a, p)) {
                 e.setCancelled(true);
                 return;
             }
-            if (a.getRespawnSessions().containsKey(p)) {
+
+            // Water placement target location
+            Block waterBlock = e.getBlockClicked().getRelative(e.getBlockFace());
+            Location waterLocation = waterBlock.getLocation();
+
+            // Build height limit
+            if (isAboveMaxBuildY(a, waterLocation)) {
                 e.setCancelled(true);
                 return;
             }
-            if (a.getStatus() != GameState.playing) {
+
+            // Protected areas around spawns/shops/upgrades/generators
+            if (isProtectedLocation(a, waterLocation)) {
                 e.setCancelled(true);
+                p.sendMessage(getMsg(p, Messages.INTERACT_CANNOT_PLACE_BLOCK));
                 return;
             }
-            if (e.getBlockClicked().getLocation().getBlockY() >= a.getConfig().getInt(ConfigPath.ARENA_CONFIGURATION_MAX_BUILD_Y)) {
-                e.setCancelled(true);
-                return;
-            }
-            try {
-                for (ITeam t : a.getTeams()) {
-                    if (t.getSpawn().distance(e.getBlockClicked().getLocation()) <= a.getConfig().getInt(ConfigPath.ARENA_SPAWN_PROTECTION)) {
-                        e.setCancelled(true);
-                        p.sendMessage(getMsg(p, Messages.INTERACT_CANNOT_PLACE_BLOCK));
-                        return;
-                    }
-                    if (t.getShop().distance(e.getBlockClicked().getLocation()) <= a.getConfig().getInt(ConfigPath.ARENA_SHOP_PROTECTION)) {
-                        e.setCancelled(true);
-                        p.sendMessage(getMsg(p, Messages.INTERACT_CANNOT_PLACE_BLOCK));
-                        return;
-                    }
-                    if (t.getTeamUpgrades().distance(e.getBlockClicked().getLocation()) <= a.getConfig().getInt(ConfigPath.ARENA_UPGRADES_PROTECTION)) {
-                        e.setCancelled(true);
-                        p.sendMessage(getMsg(p, Messages.INTERACT_CANNOT_PLACE_BLOCK));
-                        return;
-                    }
-                    for (IGenerator o : t.getGenerators()) {
-                        if (o.getLocation().distance(e.getBlockClicked().getLocation()) <= a.getConfig().getInt(ConfigPath.ARENA_GENERATOR_PROTECTION)) {
-                            e.setCancelled(true);
-                            p.sendMessage(getMsg(p, Messages.INTERACT_CANNOT_PLACE_BLOCK));
-                            return;
-                        }
-                    }
-                }
-                for (IGenerator o : a.getOreGenerators()) {
-                    if (o.getLocation().distance(e.getBlockClicked().getLocation()) <= a.getConfig().getInt(ConfigPath.ARENA_GENERATOR_PROTECTION)) {
-                        e.setCancelled(true);
-                        p.sendMessage(getMsg(p, Messages.INTERACT_CANNOT_PLACE_BLOCK));
-                        return;
-                    }
-                }
-            } catch (Exception ignored) {
-            }
-            /* Remove empty bucket */
+
+            // Remove one empty bucket from player's hand after a short delay
             Bukkit.getScheduler().runTaskLater(plugin, () -> nms.minusAmount(e.getPlayer(), e.getItemStack(), 1), 3L);
         }
     }
@@ -601,6 +577,38 @@ public class BreakPlace implements Listener {
                     e.setCancelled(true);
             }
         }
+    }
+
+    private boolean isPlayerRestrictedInArena(@NotNull IArena a, @NotNull Player p) {
+        if (a.isSpectator(p)) return true;
+        if (a.getRespawnSessions().containsKey(p)) return true;
+        return a.getStatus() != GameState.playing;
+    }
+
+    private boolean isAboveMaxBuildY(@NotNull IArena a, @NotNull Location location) {
+        try {
+            return location.getBlockY() >= a.getConfig().getInt(ConfigPath.ARENA_CONFIGURATION_MAX_BUILD_Y);
+        } catch (Exception ignored) {
+            return false;
+        }
+    }
+
+    private boolean isProtectedLocation(@NotNull IArena a, @NotNull Location location) {
+        try {
+            for (ITeam t : a.getTeams()) {
+                if (t.getSpawn().distance(location) <= a.getConfig().getInt(ConfigPath.ARENA_SPAWN_PROTECTION)) return true;
+                if (t.getShop().distance(location) <= a.getConfig().getInt(ConfigPath.ARENA_SHOP_PROTECTION)) return true;
+                if (t.getTeamUpgrades().distance(location) <= a.getConfig().getInt(ConfigPath.ARENA_UPGRADES_PROTECTION)) return true;
+                for (IGenerator o : t.getGenerators()) {
+                    if (o.getLocation().distance(location) <= a.getConfig().getInt(ConfigPath.ARENA_GENERATOR_PROTECTION)) return true;
+                }
+            }
+            for (IGenerator o : a.getOreGenerators()) {
+                if (o.getLocation().distance(location) <= a.getConfig().getInt(ConfigPath.ARENA_GENERATOR_PROTECTION)) return true;
+            }
+        } catch (Exception ignored) {
+        }
+        return false;
     }
 
     public static boolean isBuildSession(Player p) {
